@@ -56,4 +56,85 @@ function analyzeCart() {
         <strong>Lowest Product Price:</strong> ${lowestPrice} Tk<br>
         <strong>Characters in Name:</strong> ${charCount}
     `;
+}function analyzeCart() {
+
+    let customerName = document.getElementById("customerName").value;
+    let pricesInput = document.getElementById("prices").value;
+
+    if (customerName === "" || pricesInput === "") {
+        alert("Please fill all fields");
+        return;
+    }
+
+    // Convert prices input to array
+    let prices = pricesInput.split(",").map(Number);
+
+    // Calculate total price
+    let totalPrice = 0;
+    for (let i = 0; i < prices.length; i++) {
+        totalPrice += prices[i];
+    }
+
+    // Discount logic
+    let discountRate = 0;
+    if (totalPrice >= 3000) {
+        discountRate = 0.20;
+    } else if (totalPrice >= 2000) {
+        discountRate = 0.10;
+    }
+
+    let discountAmount = totalPrice * discountRate;
+    let finalPayable = totalPrice - discountAmount;
+
+    // Find lowest price
+    function findLowestPrice(arr) {
+        let lowest = arr[0];
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i] < lowest) {
+                lowest = arr[i];
+            }
+        }
+        return lowest;
+    }
+
+    let lowestPrice = findLowestPrice(prices);
+
+    // Count characters without .length
+    let charCount = 0;
+    for (let ch of customerName) {
+        charCount++;
+    }
+
+    // Output
+    document.getElementById("result").innerHTML = `
+        <div class="result-item">
+            <div>Customer Name</div>
+            <span>${customerName}</span>
+        </div>
+
+        <div class="result-item">
+            <div>Total Price</div>
+            <span>${totalPrice} Tk</span>
+        </div>
+
+        <div class="result-item">
+            <div>Discount Amount</div>
+            <span class="warning">-${discountAmount.toFixed(2)} Tk</span>
+        </div>
+
+        <div class="result-item">
+            <div>Final Payable</div>
+            <span class="highlight">${finalPayable.toFixed(2)} Tk</span>
+        </div>
+
+        <div class="result-item">
+            <div>Lowest Product Price</div>
+            <span>${lowestPrice} Tk</span>
+        </div>
+
+        <div class="result-item">
+            <div>Characters in Name</div>
+            <span>${charCount}</span>
+        </div>
+    `;
 }
